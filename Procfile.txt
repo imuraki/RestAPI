@@ -1,0 +1,1 @@
+web: gunicorn homechallenge.wsgi --log-file -
