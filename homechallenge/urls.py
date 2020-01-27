@@ -1,7 +1,7 @@
 from django.urls import include, path, re_path
 from . import views
 
-urlpatterns  = [re_path(r'^loanapp/(?P<pk>[0-9]+)$', # Url to get update or delete a movie
+urlpatterns  = [re_path(r'^loanapp/(?P<pk>[0-9]+)$', # Url to get update or delete a loanapplication
         views.get_delete_update_movie.as_view(),
         name='get_delete_update_movie'
     ),
@@ -9,4 +9,4 @@ urlpatterns  = [re_path(r'^loanapp/(?P<pk>[0-9]+)$', # Url to get update or dele
         views.get_post_movies.as_view(),
         name='get_post_movies'
     ),
-    path('status/', views.get_post_status.as_view(), name='get_post_status')]
+    path('status/', views.get_post_status.as_view(), name='get_post_status')] # urls list status of all applications and get one

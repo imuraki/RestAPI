@@ -20,7 +20,6 @@ homechallenge_urlpatterns = [path('', include('homechallenge.urls'))]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', include('sample.urls')),
     path('', include(homechallenge_urlpatterns)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

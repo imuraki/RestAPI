@@ -17,7 +17,7 @@ class get_delete_update_movie(RetrieveUpdateDestroyAPIView):
             return None             
         return loanapplication
 
-    # Get a movie
+    # Get a loanapplication
     def get(self, request, pk):
 
         loanapplication = self.get_queryset(pk)
@@ -39,29 +39,22 @@ class get_delete_update_movie(RetrieveUpdateDestroyAPIView):
             return Response(content, status=status.HTTP_404_NOT_FOUND)
 
 
-# Update a movie
+# Update a loanapplication
     def put(self, request, pk):
         
         loanapplication = self.get_queryset(pk)
-
-        # if(request.user == movie.creator): # If creator is who makes request
         serializer = LoanApplicationSerializer(loanapplication, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # else:
-        #     content = {
-        #         'status': 'UNAUTHORIZED'
-        #     }
-        #     return Response(content, status=status.HTTP_401_UNAUTHORIZED)
 
-    # Delete a movie
+
+    # Delete a loanapplication
     def delete(self, request, pk):
 
         loanapplication = self.get_queryset(pk)
 
-        # if(request.user == movie.creator): # If creator is who makes request
         if loanapplication != None:
             loanapplication.delete()
             content = {
@@ -73,13 +66,8 @@ class get_delete_update_movie(RetrieveUpdateDestroyAPIView):
                 'status': 'Resource Not Found'
             }
             Response(content, status=status.HTTP_404_NOT_FOUND)
-        # else:
-        #     content = {
-        #         'status': 'UNAUTHORIZED'
-        #     }
-        #     return Response(content, status=status.HTTP_401_UNAUTHORIZED)
    
-
+# Create your views here.
 class get_post_movies(ListCreateAPIView):
     serializer_class = LoanApplicationSerializer
 
@@ -96,7 +84,8 @@ class get_post_movies(ListCreateAPIView):
             return modelObj.HomeAddress
         elif key == 'CFApplicationData':
             return modelObj.CFApplicationData
-    
+
+    #Find the Change in the fields and update only those respective instances of Database. Algorithm to update only change in the fields
     def update(self, a, b, modelObj):
         for key in list(b.keys()):
             if(isinstance(b[key], dict) == False and isinstance(b[key], list) == False):
@@ -151,7 +140,7 @@ class get_post_movies(ListCreateAPIView):
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         
 
-    # Create a new movie
+    # Create a new loanapplication
     def post(self, request):
         serializer = LoanApplicationSerializer(data=request.data)   
         if serializer.is_valid():
@@ -179,7 +168,7 @@ class get_post_movies(ListCreateAPIView):
             return Response(content, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+#Get the status of a particular application given a loanappid
 class get_post_status(ListCreateAPIView):
     serializer_class = LoanApplicationSerializer
     

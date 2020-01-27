@@ -6,7 +6,7 @@ from rest_framework import status
 # Create your tests here.
 
 class LoanApplicationTestCase(APITestCase):
-
+    #Setting up the data for test
     def setUp(self):
         self.data={
             "AppID": 1,
@@ -99,6 +99,7 @@ class LoanApplicationTestCase(APITestCase):
             }}
         self.maxDiff = None
 
+    #test post loanapplication
     def test_postloanapplication(self):
         response = self.client.post('/loanapp/', self.data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -111,6 +112,7 @@ class LoanApplicationTestCase(APITestCase):
         response = self.client.post('/loanapp/', {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    #test post duplicate application
     def test_postduplicateloanapplication(self):
         response = self.client.post('/loanapp/', self.data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -136,9 +138,7 @@ class LoanApplicationTestCase(APITestCase):
         self.assertEqual(json.loads(response.content.decode('utf-8'))['Business']['SelfReportedCashFlow']['AnnualRevenue'], 20.50)
         self.assertEqual(json.loads(response.content.decode('utf-8'))['Business']['Phone'], '9567959971')
 
-
-
-
+    #test get loan application
     def test_getloanapplication(self):
         self.client.post('/loanapp/', self.data, format='json')
         response = self.client.get('/loanapp/')
@@ -153,6 +153,7 @@ class LoanApplicationTestCase(APITestCase):
                 'status': 'Resource Not Found'
             })
     
+    # test get status of loan application
     def test_getstatus(self):
         self.client.post('/loanapp/', self.data, format='json')
         response = self.client.get('/status/?loanappid=1')
@@ -171,6 +172,7 @@ class LoanApplicationTestCase(APITestCase):
                 'status': 'Resource Not Found'
             })
 
+    #test delete loan application
     def test_deleteloanapplication(self):
         self.client.post('/loanapp/', self.data, format='json')
         response = self.client.delete('/loanapp/1')

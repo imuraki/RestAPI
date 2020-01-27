@@ -4,15 +4,8 @@ from django.db import models
 
 
 class LoanApplication(models.Model):
-    # requestHeader = models.ForeignKey(RequestHeader, related_name='requestHeader', on_delete=models.CASCADE)
-    AppID = models.IntegerField()
+    AppID = models.IntegerField() #AppID assuimg apllication sends an appid with the remaining data. AppID refers to single application, Every post request means new application
     Status = models.CharField(max_length=100, default='Submitted')
-
-    # title = models.CharField(max_length=100)
-    # genre = models.CharField(max_length=100)
-    # year = models.IntegerField()
-    # created_at = models.DateTimeField(auto_now_add=True) # When it was create
-    # updated_at = models.DateTimeField(auto_now=True) # When i was update
 
     def __str__(self):
         return str(self.AppID)

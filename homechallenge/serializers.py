@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import LoanApplication, RequestHeaderModel, BusinessModel, AddressModel, HomeAddressModel, OwnersModel, SelfReportedCashFlowModel, CFApplicationDataModel, CFApplicationDataModel
+import enum 
 
 class RequestHeaderSerializer(serializers.ModelSerializer):
 
@@ -50,6 +51,7 @@ class CFApplicationDataModelSerializer(serializers.ModelSerializer):
         fields = ('RequestedLoanAmount','StatedCreditHistory','LegalEntityType','FilterID')
 
 
+#Main serializer which serializes the Main json object which internally calls respective model's serializers for nested objects
 class LoanApplicationSerializer(serializers.ModelSerializer):  # create class to serializer model
     RequestHeader = RequestHeaderSerializer()
     Business = BusinessModelSerializer()
