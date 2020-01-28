@@ -85,7 +85,7 @@ class get_post_movies(ListCreateAPIView):
         elif key == 'CFApplicationData':
             return modelObj.CFApplicationData
 
-    #Find the Change in the fields and update only those respective instances of Database. Algorithm to update only change in the fields
+    #Find the Change in the fields and update only those respective instances of Database. Algorithm to update only change in the fields(Task 3)
     def update(self, a, b, modelObj):
         for key in list(b.keys()):
             if(isinstance(b[key], dict) == False and isinstance(b[key], list) == False):
@@ -132,7 +132,10 @@ class get_post_movies(ListCreateAPIView):
                 each.CFApplicationData = CFApplicationDataModel.objects.get(loanapplication=each)
 
             serializer = self.serializer_class(loanapplications, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            content = {
+                'data': serializer.data
+            }
+            return Response(content, status=status.HTTP_200_OK)
         else:
             content = {
                 'status': 'Resource Not Found'
@@ -158,8 +161,14 @@ class get_post_movies(ListCreateAPIView):
                 loanapplication.CFApplicationData = CFApplicationDataModel.objects.get(loanapplication=loanapplication)
                 db_dict = LoanApplicationSerializer(loanapplication).data
                 self.update(db_dict, request.data, loanapplication)
+            elif (len(LoanApplication.objects.filter(AppID=request.data['AppID'])) != 0):
+                content={
+                    "status": "Application Already exists, Try New Application"
+                }
+                return Response(content, status=status.HTTP_400_BAD_REQUEST)
             else:
                 serializer.save()
+
             content = {
                 "status": 'OK',
                 "AppID": request.data['AppID'],
